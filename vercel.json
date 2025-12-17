@@ -7,11 +7,7 @@
    ],
    "functions": {
        "api/index.js": {
-          "includeFiles": [
-            "dist/client/**",
-            "dist/server/**",
-            "dist/server/entry-server.js"
-          ]
+          "includeFiles": "dist/**"
        }
    }
 }
