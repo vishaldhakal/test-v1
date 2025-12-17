@@ -3,6 +3,7 @@ import express from "express";
 
 // Constants
 const isProduction = process.env.NODE_ENV === "production";
+const isVercel = Boolean(process.env.VERCEL);
 const port = process.env.PORT || 5173;
 const base = process.env.BASE || "/";
 
@@ -33,7 +34,7 @@ if (!isProduction) {
 }
 
 // Serve HTML
-app.use("*all", async (req, res) => {
+app.use("*", async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, "");
 
@@ -65,7 +66,11 @@ app.use("*all", async (req, res) => {
   }
 });
 
-// Start http server
-app.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
-});
+// Export for serverless (Vercel) and start listener locally
+if (!isVercel) {
+  app.listen(port, () => {
+    console.log(`Server started at http://localhost:${port}`);
+  });
+}
+
+export default app;
